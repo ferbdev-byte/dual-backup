@@ -44,6 +44,9 @@ dualbackup --drive-label SAOLUU list
 # Kiểm chứng toàn bộ (băm lại từng object)
 dualbackup --drive-label SAOLUU verify
 
+# So hai bản: file nào thêm, xoá, sửa
+dualbackup --drive-label SAOLUU diff 20261121-190000 20261122-190000
+
 # Diễn tập khôi phục: lấy lại thư mục hop-dong của ngày 21/11
 dualbackup --drive-label SAOLUU restore D:\DienTap --name 20261121-190000 --only hop-dong
 ```

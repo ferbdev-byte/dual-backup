@@ -159,6 +159,15 @@ class Store:
             count += 1
         return count
 
+    def diff(self, old: str, new: str) -> dict[str, NameList]:
+        """So hai bản sao lưu: file thêm mới, bị xoá, và bị sửa nội dung."""
+        a, b = self.get(old).files, self.get(new).files
+        return {
+            "added": sorted(b.keys() - a.keys()),
+            "removed": sorted(a.keys() - b.keys()),
+            "changed": sorted(k for k in a.keys() & b.keys() if a[k]["sha256"] != b[k]["sha256"]),
+        }
+
     # ---------- dọn ----------
     def prune(self, keep_last: int = 7, keep_daily: int = 30, now: float | None = None) -> NameList:
         """Giữ `keep_last` bản mới nhất và một bản mỗi ngày trong `keep_daily` ngày. Trả về tên các bản đã xoá."""
