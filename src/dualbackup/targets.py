@@ -15,7 +15,7 @@ def find_drive_by_label(label: str) -> Path | None:
         return None
     import ctypes
 
-    k = ctypes.windll.kernel32
+    k = ctypes.windll.kernel32  # type: ignore[attr-defined,unused-ignore]  # chỉ có trên Windows
     mask = k.GetLogicalDrives()
     for i, letter in enumerate(string.ascii_uppercase):
         if not mask >> i & 1:

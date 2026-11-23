@@ -16,7 +16,7 @@ def _mb(n: int) -> str:
     return f"{n / 1024 / 1024:.1f} MB"
 
 
-def _resolve_store(args) -> Store:
+def _resolve_store(args: argparse.Namespace) -> Store:
     if args.drive_label:
         root = find_drive_by_label(args.drive_label)
         if root is None:
