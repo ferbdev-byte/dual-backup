@@ -6,11 +6,9 @@
 
 Sao lưu một thư mục ra **ổ cứng ngoài** và **cloud** (qua rclone), có chống trùng, manifest SHA-256 và lệnh **khôi phục thử**. Viết theo nguyên tắc: *một bản sao lưu chưa từng khôi phục thử thành công thì chưa được tính là bản sao lưu.*
 
-> Tách ra và tổng quát hoá từ phần sao lưu của hệ thống điều hành nội bộ mình xây cho công ty.
-
 ```mermaid
 flowchart LR
-    S[Kho tài liệu<br/>C:/Kho] -->|backup + SHA-256| E[(Ổ ngoài nhãn SAOLUU<br/>objects/ + snapshots/)]
+    S[Kho tài liệu<br/>D:/DuLieu] -->|backup + SHA-256| E[(Ổ ngoài nhãn SAOLUU<br/>objects/ + snapshots/)]
     E -->|rclone sync --checksum| C[(Google Drive / OneDrive / S3)]
     E -->|restore + kiểm từng file| R[Thư mục khôi phục thử]
 ```
@@ -36,7 +34,7 @@ winget install Rclone.Rclone   # chỉ cần nếu đẩy lên cloud
 
 ```powershell
 # Sao lưu ra ổ ngoài có nhãn SAOLUU, kiểm chứng ngay, rồi đẩy lên Google Drive
-dualbackup --drive-label SAOLUU backup C:\Kho --remote gdrive:SaoLuu
+dualbackup --drive-label SAOLUU backup D:\DuLieu --remote gdrive:SaoLuu
 
 # Xem các bản
 dualbackup --drive-label SAOLUU list
@@ -58,7 +56,7 @@ Mã thoát: `0` ổn, `2` kiểm chứng lỗi, `3` rclone lỗi. Có thể dùn
 from dualbackup import Store
 
 store = Store("E:/dualbackup")
-snap, new_objects = store.backup("C:/Kho")
+snap, new_objects = store.backup("D:/DuLieu")
 assert store.verify(snap.name).ok
 store.restore("D:/DienTap", name=snap.name)
 ```
