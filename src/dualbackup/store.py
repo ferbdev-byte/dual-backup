@@ -19,6 +19,7 @@ import shutil
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 SKIP_NAMES = {"Thumbs.db", "desktop.ini", ".DS_Store"}
 
@@ -36,7 +37,7 @@ class Snapshot:
     name: str
     created: float
     source: str
-    files: dict[str, dict] = field(default_factory=dict)  # rel_path -> {size, sha256, mtime}
+    files: dict[str, dict[str, Any]] = field(default_factory=dict)  # rel_path -> {size, sha256, mtime}
 
     @property
     def total_bytes(self) -> int:
@@ -52,6 +53,10 @@ class VerifyReport:
     @property
     def ok(self) -> bool:
         return not self.missing and not self.corrupt
+
+
+# Bí danh kiểu: trong class Store, tên `list` bị phương thức Store.list che mất
+NameList = list[str]
 
 
 class Store:
@@ -155,7 +160,7 @@ class Store:
         return count
 
     # ---------- dọn ----------
-    def prune(self, keep_last: int = 7, keep_daily: int = 30, now: float | None = None) -> list[str]:
+    def prune(self, keep_last: int = 7, keep_daily: int = 30, now: float | None = None) -> NameList:
         """Giữ `keep_last` bản mới nhất và một bản mỗi ngày trong `keep_daily` ngày. Trả về tên các bản đã xoá."""
         now = time.time() if now is None else now
         snaps = self.list()
