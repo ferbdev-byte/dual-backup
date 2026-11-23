@@ -3,4 +3,4 @@
 from .store import Snapshot, Store, VerifyReport
 
 __all__ = ["Snapshot", "Store", "VerifyReport"]
-__version__ = "0.1.0"
+__version__ = "0.2.0"
