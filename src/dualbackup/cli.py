@@ -46,6 +46,10 @@ def main(argv: list[str] | None = None) -> int:
     v.add_argument("name", nargs="?")
     v.add_argument("--quick", action="store_true", help="chỉ kiểm có mặt, không băm lại")
 
+    d = sub.add_parser("diff", help="so hai bản sao lưu: thêm, xoá, sửa")
+    d.add_argument("old")
+    d.add_argument("new")
+
     r = sub.add_parser("restore", help="khôi phục ra thư mục rỗng")
     r.add_argument("target")
     r.add_argument("--name")
@@ -68,6 +72,14 @@ def main(argv: list[str] | None = None) -> int:
             code = rclone_sync(store.root, args.remote)
             print("Đã đẩy lên cloud" if code == 0 else f"rclone lỗi (mã {code})")
             return 0 if code == 0 else 3
+        return 0
+
+    if args.cmd == "diff":
+        ch = store.diff(args.old, args.new)
+        for label, key in (("+ thêm", "added"), ("- xoá", "removed"), ("~ sửa", "changed")):
+            for path in ch[key]:
+                print(f"{label:<7} {path}")
+        print(f"Tổng: {len(ch['added'])} thêm, {len(ch['removed'])} xoá, {len(ch['changed'])} sửa")
         return 0
 
     if args.cmd == "list":
