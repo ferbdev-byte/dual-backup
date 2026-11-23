@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dual-backup"
+version = "0.1.0"
+description = "Sao lưu có kiểm chứng ra ổ cứng ngoài và cloud: chống trùng, SHA-256, khôi phục thử được."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Võ Ngọc Cường" }]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+dualbackup = "dualbackup.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+dualbackup = ["*.ttf", "*.json"]
+
+[tool.ruff]
+line-length = 125
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
